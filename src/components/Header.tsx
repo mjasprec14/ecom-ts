@@ -22,7 +22,8 @@ const Header = ({ viewCart, setViewCart }: PropsType) => {
       />
     </header>
   );
-  return <div>Header</div>;
+
+  return content;
 };
 
 export default Header;
