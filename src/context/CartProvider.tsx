@@ -44,6 +44,7 @@ const reducer = (
       const itemExists: CartItemType | undefined = state.cart.find(
         (item) => item.sku === sku
       );
+
       const qty: number = itemExists ? itemExists.qty + 1 : 1;
 
       return {
@@ -78,7 +79,7 @@ const reducer = (
       );
 
       if (!itemExists) {
-        throw new Error('Item must exist in order to update quantity.');
+        throw new Error('Item must exist in order to update quantity');
       }
 
       const updatedItem: CartItemType = { ...itemExists, qty };
@@ -87,7 +88,10 @@ const reducer = (
         (item) => item.sku !== sku
       );
 
-      return { ...state, cart: [...filteredCart, updatedItem] };
+      return {
+        ...state,
+        cart: [...filteredCart, updatedItem],
+      };
     }
     case REDUCER_ACTION_TYPE.SUBMIT: {
       return { ...state, cart: [] };
@@ -104,16 +108,16 @@ const useCartContext = (initCartState: CartStateType) => {
     return REDUCER_ACTION_TYPE;
   }, []);
 
-  const totalItems = state.cart.reduce((previousValue, cartItem) => {
-    return previousValue + cartItem.qty;
+  const totalItems = state.cart.reduce((prevValue, cartItem) => {
+    return prevValue + cartItem.qty;
   }, 0);
 
   const totalPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   }).format(
-    state.cart.reduce((previousValue, cartItem) => {
-      return previousValue + cartItem.qty * cartItem.price;
+    state.cart.reduce((prevValue, cartItem) => {
+      return prevValue + cartItem.price * cartItem.qty;
     }, 0)
   );
 
@@ -125,11 +129,11 @@ const useCartContext = (initCartState: CartStateType) => {
   });
 
   return {
-    REDUCER_ACTIONS,
     dispatch,
-    cart,
+    REDUCER_ACTIONS,
     totalItems,
     totalPrice,
+    cart,
   };
 };
 
