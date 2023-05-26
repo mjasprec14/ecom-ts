@@ -1,4 +1,4 @@
-import { ReactElement, ChangeEvent } from 'react';
+import { ReactElement, ChangeEvent, memo } from 'react';
 import {
   CartItemType,
   ReducerAction,
@@ -36,7 +36,7 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropTypes) => {
 
   const onChangeQty = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch({
-      type: REDUCER_ACTIONS.SUBMIT,
+      type: REDUCER_ACTIONS.QUANTITY,
       payload: { ...item, qty: Number(e.target.value) },
     });
   };
@@ -102,4 +102,20 @@ const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropTypes) => {
   return content;
 };
 
-export default CartLineItem;
+function areItemsEqual(
+  { item: prevItem }: PropTypes,
+  { item: nexItem }: PropTypes
+) {
+  return Object.keys(prevItem).every((key) => {
+    return (
+      prevItem[key as keyof CartItemType] === nexItem[key as keyof CartItemType]
+    );
+  });
+}
+
+const MemoizedCartLineItem = memo<typeof CartLineItem>(
+  CartLineItem,
+  areItemsEqual
+);
+
+export default MemoizedCartLineItem;
