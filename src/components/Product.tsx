@@ -18,15 +18,14 @@ const Product = ({
   const img: string = new URL(`../images/${product.sku}.jpg`, import.meta.url)
     .href;
 
-  console.log(img);
-
-  const onAddToCart = () =>
+  const onAddToCart = () => {
     dispatch({ type: REDUCER_ACTIONS.ADD, payload: { ...product, qty: 1 } });
+  };
 
   const itemInCart = inCart ? ' → Item in Cart: ✔️' : null;
 
   const content = (
-    <article>
+    <article className='product'>
       <h3>{product.name}</h3>
       <img
         src={img}
